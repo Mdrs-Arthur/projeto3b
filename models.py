@@ -12,7 +12,6 @@ class Usuario(Base):
     nome: Mapped[String] = mapped_column(String(80), nullable=False)
     email: Mapped[String] = mapped_column(String(80), unique=True)
 
-    Livros: Mapped[List["Livro"]] = relationship(back_populates="Usuarios")
 
 
 class Livro(Base):
@@ -20,9 +19,7 @@ class Livro(Base):
 
     id: Mapped[int] = mapped_column(autoincrement=True, primary_key=True)
     titulo: Mapped[String] = mapped_column(String(100), nullable=False)
-    id_usuario: Mapped[int] = mapped_column(ForeignKey("Usuario.id"))
 
-    Usuarios: Mapped["Usuario"] = relationship(back_populates="Livro")
     Exemplares: Mapped[List["Exemplar"]] = relationship(back_populates="Livros")
 
 class Exemplar(Base):
@@ -32,16 +29,22 @@ class Exemplar(Base):
     titulo: Mapped[String] = mapped_column(String(100), nullable=False)
     quantidade: Mapped[int] = mapped_column(int)
 
-    Livros: Mapped["Livro"] = relationship(back_populates="Exemplar")
+    id_livro: Mapped[int] = mapped_column(ForeignKey("Livro.id"))
+    id_exemplar: Mapped[int] = mapped_column(ForeighKey("Exemplares.id"))
+
+    Livros: Mapped["Livro"] = relationship(back_populates="Exemplares")
+    emprestimo: Mapped["Emprestimo"] = relationship(back_populates="exemplar")
 
 
 class Emprestimo(Base):
     __tablename__ = "Emprestimos"
 
     id: Mapped[int] = mapped_column(autoincrement=True, primary_key=True)
-    id_usuario: Mapped[int] = mapped_column(ForeignKey("User.id"))
 
-    Users: Mapped["User"] = relationship(back_populates="Books")
+    id_exemplar: Mapped[int] = mapped_column(ForeighKey("Exemplares.id"))
+
+    exemplar: Mapped["Exemplar"] = relationship(back_populates="emprestimo")
+
 
 class Autor(Base):
     __tablename__ = "Autores"
