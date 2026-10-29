@@ -5,13 +5,14 @@
     <img src="{{url_for('static', filename = 'img/cadastro.png')}}" alt="" height="400px" width="400px">
     <div class="form">
         <h1>Cadastro</h1>
-        <form action="{{url_for('cadastro')}}" method="post">
-            <input type="text" name="usuario" placeholder="Usuario" required>
+        <form action="{{url_for('auth.cadastro')}}" method="post">
+            <input type="text" name="nome" placeholder="Usuario" required>
+            <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="senha" placeholder="Senha" required>
             <input type="text" name="codigo_admin" placeholder="Código de administrador" id="codigo_admin">
             <button type="submit">Cadastrar</button>
         </form>
-        <p>Já possui conta? <a href="{{url_for('login')}}">Entrar</a></p>
+        <p>Já possui conta? <a href="{{url_for('auth.login')}}">Entrar</a></p>
     </div>
 </div>
 {% endblock %}

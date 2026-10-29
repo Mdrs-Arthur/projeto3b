@@ -1,9 +1,9 @@
 from typing import List
 
-from sqlalchemy import ForeignKey, String , Table,Integer,Column
+from sqlalchemy import ForeignKey, String, Table, Integer, Column
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from database import Base, criar_banco
+from database import Base
 
 associativa_liv_aut = Table(
     "Autor_Livro",
@@ -66,6 +66,3 @@ class Autor(Base):
 
     livro: Mapped[List['Livro']] = relationship(secondary=associativa_liv_aut,back_populates='autores')
 
-
-
-criar_banco()
