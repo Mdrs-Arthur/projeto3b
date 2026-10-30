@@ -28,7 +28,9 @@ class Livro(Base):
 
     id: Mapped[int] = mapped_column(autoincrement=True, primary_key=True)
     titulo: Mapped[str] = mapped_column(String(100), nullable=False)
-    ano: Mapped[int] = mapped_column(String(10), nullable=False)
+    ano: Mapped[int] = mapped_column(Integer, nullable=False)
+    genero: Mapped[str] = mapped_column(String(100), nullable=False)
+
 
     exemplares: Mapped[List["Exemplar"]] = relationship(back_populates="livros")
 
