@@ -1,3 +1,4 @@
+from flask import session, flash, redirect, url_for
 from sqlalchemy import select
 from models import Usuario
 from models import Livro
@@ -7,7 +8,7 @@ from models import Autor
 #precisa fazer o escopo dessas funções que vão popular o banco e fazer buscas
 #eu populei o banco no seed.py
 
-def criar_usuario(session,nome, email, senha_hash):
+def criar_usuario(session, nome, email, senha_hash):
     usuario = Usuario(
         nome = nome,
         email = email,
@@ -77,5 +78,15 @@ def buscar_l_p_autor(session, autor):
     livro = session.scalars(busca).all()
 
     return livro
+
+def listar_livros(session):
+    livros = session.scalars(select(Livro)).all()
+    return livros
 # esse é diferente pq o autor é um relacionamento de livro , e n um paramentro viu
 #o .any ve se tem algum autor relacionado aquele livro 
+
+#verificação de usuários para a restrição de rotas
+def exigir_login():
+    if 'usuario_id' not in session:
+        flash('você precisa  ester logado!')
+        return redirect(url_for('auth.login'))

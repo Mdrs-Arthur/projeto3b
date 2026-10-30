@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block cont %}
+
+<div class="corpo">
+
+    <h2>Detalhes do Livro</h2>
+
+    <div class="detalhe-livro">
+
+        <div class="informacoes">
+
+            <h1>{{ livro.titulo }}</h1>
+
+            <div class="informacao">
+                <div class="info">
+                    <h3>Gênero:</h3>
+                    <h4>{{ livro.genero }}</h4>
+                </div>
+                <div class="info">
+                    <h3>Ano:</h3>
+                    <h4>{{ livro.ano }}</h4>
+                </div>
+            </div>
+
+            <a href="#" class="voltar">
+                Pegar Emprestado
+            </a>
+
+            <a href="{{ url_for('livro.livros') }}" class="voltar">
+                ← Voltar para a lista
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block estilo %}
+
+<style>
+
+.container {
+    display: flex;
+}
+
+.corpo {
+    width: 90%;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+}
+
+h2 {
+    width: 100%;
+    background-color: rgb(173, 207, 238);
+    border-bottom: 5px solid rgb(97, 155, 209);
+    padding: 10px;
+    text-align: center;
+}
+
+.detalhe-livro {
+    width: 100%;
+    padding: 30px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 4px gray;
+    box-sizing: border-box;
+}
+
+.informacoes h1 {
+    margin-top: 0;
+    font-size: 32px;
+}
+
+.informacao {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.informacao h3, h4 {
+    width: 100px;
+    margin: 0;
+}
+.info{
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+}
+
+.voltar {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 12px 20px;
+    background-color: rgb(97, 155, 209);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.voltar:hover {
+    background-color: rgb(70, 125, 180);
+}
+
+
+</style>
+
+{% endblock %}

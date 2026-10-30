@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block cont %}
+<div class="corpo">
+    <div class="info">
+        <div class="img">
+            <img src="{{url_for('static', filename='img/perfil.png')}}" alt="" height="150px" width="150px">
+            <h1>Meu perfil</h1>
+        </div>
+        <div class="tex">
+            <p>Usuário: {{ usuario }}</p>
+            <p>Email: {{ email }}</p>
+            <a href="{{ url_for('auth.logout') }}"><button>Sair da conta</button></a>
+        </div>
+    </div>
+    <div class="livemp">
+        <h3>Livros Emprestados</h3>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block estilo %}
+<style>
+    .corpo{
+        display: flex;
+        flex-direction: column;
+        min-width: 50%;
+    }
+    .corpo p{
+        background-color: rgb(173, 207, 238);
+        padding: 15px;
+        border-radius: 15px;
+        width: 100%;
+    }
+    button{
+        background-color: rgb(97, 155, 209);
+        padding: 15px;
+        border-radius: 15px;
+        width: 100%;
+        box-shadow: none;
+        border: none;
+    }
+    .flash{
+        width: 50%;
+    }
+    .info{
+        display: flex;
+        flex-direction: row;
+        gap: 25px;
+    }
+    .img{
+        border-right: 1px solid rgb(173, 207, 238);
+        padding-right: 25px;
+    }
+    h3{
+        width: 100%;
+        background-color: rgb(173, 207, 238);
+        border-bottom: 5px solid rgb(97, 155, 209);
+        padding: 10px;
+        text-align: center;
+    }
+</style>
+{% endblock %}

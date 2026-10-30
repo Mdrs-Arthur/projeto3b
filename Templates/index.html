@@ -5,9 +5,11 @@
 <div class="texto">
     <h1>Bem-Vindo à Biblioteca Online!</h1>
     <p>Um lugar pra você descobrir, explorar e se apaixonar por historias incríveis!</p>
+    {% if 'usuario_id' not in session %}
         <a href="{{url_for('auth.cadastro')}}">
             <button>Cadastre-se</button>
         </a>
+    {% endif %}
 </div>
 <img src="{{ url_for('static', filename='img/inicio.png') }}" alt="logo" height="500" >
 {% endblock %}
