@@ -3,6 +3,8 @@ from sqlalchemy import select
 from models import Usuario
 from models import Livro
 from models import Autor
+from models import Exemplar
+from models import Emprestimo
 
 
 #precisa fazer o escopo dessas funções que vão popular o banco e fazer buscas
@@ -37,17 +39,24 @@ def buscar_u_p_nome(session, nome):
 
     return usuario
 
-def criar_livro(session,titulo, ano, genero,autores):
-    livro = Livro(
-        titulo = titulo,
-        ano = ano,
-        genero = genero,
-        autores = autores
-    )
+def criar_livro(session, titulo, ano, genero, autores):
+
+    autor = session.scalar(select(Autor).where(Autor.nome == autores.strip()))
+
+    if not autor:
+        autor = Autor(nome=autores.strip())
+        session.add(autor)
+        
+    livro = Livro(titulo=titulo, ano=int(ano), genero=genero, autores=[autor])
 
     session.add(livro)
+
+    exemplar = Exemplar(titulo=titulo, livros=livro)
+
+    session.add(exemplar)
     session.commit()
-    return livro
+
+    return True
 
 def buscar_l_p_id(session, livro_id):
     busca = select(Livro).where(Livro.id == livro_id)
@@ -82,7 +91,32 @@ def buscar_l_p_autor(session, autor):
 def listar_livros(session):
     livros = session.scalars(select(Livro)).all()
     return livros
-# esse é diferente pq o autor é um relacionamento de livro , e n um paramentro viu
+def emprestar_livro(secao, livro_id, usuario_id):
+
+    exemplar = secao.scalar(select(Exemplar).where(Exemplar.id_livro == livro_id, Exemplar.emprestimo == None))
+
+    if not exemplar:
+        return False
+
+    emprestimo = Emprestimo(id_exemplar=exemplar.id, id_usuario=usuario_id)
+
+    secao.add(emprestimo)
+    secao.commit()
+
+    return True
+
+def devolver_livro(secao, livro_id, usuario_id):
+    emprestimo = secao.scalar(
+        select(Emprestimo).join(Exemplar).where(Exemplar.id_livro == livro_id,Emprestimo.id_usuario == usuario_id))
+
+    if not emprestimo:
+        return False
+
+    secao.delete(emprestimo)
+    secao.commit()
+
+    return True
+# esse é diferente pq o autor é um relacionamento de livro , e n um paramentro viu (essa qual?)
 #o .any ve se tem algum autor relacionado aquele livro 
 
 #verificação de usuários para a restrição de rotas

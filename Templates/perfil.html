@@ -16,8 +16,20 @@
     <div class="livemp">
         <h3>Livros Emprestados</h3>
 
+        {% for emprestimo in emprestimos %}
+            <div class="livro">
+                <p>{{ emprestimo.exemplar }}</p>
+                {# arthur arrume esse botão pfv #}
+                <a href="{{ url_for('livro.devolucao', livro_id=emprestimo.id ) }}"><button>devolver livro</button></a>
+            </div>
+        {% else %}
+            <p>Você não possui livros emprestados.</p>
+        {% endfor %}
+        
+
     </div>
 </div>
+
 {% endblock %}
 
 {% block estilo %}

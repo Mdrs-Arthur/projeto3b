@@ -14,8 +14,14 @@
 
             <div class="informacao">
                 <div class="info">
+                    <h3>Autor:</h3>
+                    {% for autor in autores %}
+                        <h4>{{ autor }}</h4>
+                    {% endfor %}
                     <h3>Gênero:</h3>
                     <h4>{{ livro.genero }}</h4>
+                    <h3>exemplares:</h3>
+                    <h4>{{exemplares}}</h4>
                 </div>
                 <div class="info">
                     <h3>Ano:</h3>
@@ -23,7 +29,7 @@
                 </div>
             </div>
 
-            <a href="#" class="voltar">
+            <a href="{{ url_for('livro.emprestimo', livro_id = livro.id ) }}" class="voltar">
                 Pegar Emprestado
             </a>
 

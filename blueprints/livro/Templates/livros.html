@@ -4,7 +4,7 @@
 <div class="corpo">
     <h2>Buscar livros</h2>
 
-    <form method="GET" action="#" class="busca">
+    <form method="GET" action="{{ url_for('livro.livros' ) }}" class="busca">
         <input type="text" name="titulo" placeholder="Buscar por título">
         <input type="text" name="genero" placeholder="Buscar por gênero">
         <button type="submit">Buscar</button>

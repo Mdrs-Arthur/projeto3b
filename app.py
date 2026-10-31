@@ -14,7 +14,3 @@ app.register_blueprint(livro)
 @app.route('/')
 def index():
     return render_template('index.html')
-
-@app.route('/cadastro_livro')
-def cadastro_livro():
-    return render_template('cadastro_livros.html')

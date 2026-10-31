@@ -6,7 +6,7 @@
   <div class="form">
     <h2>Cadastrar Livro</h2>
 
-    <form method="POST" action="{{ url_for('cadastro_livros') }}">
+    <form method="POST" action="{{ url_for('livro.cadastrar_livro') }}">
             
         <label for="titulo">Título:</label>
         <input type="text" id="titulo" name="titulo" required>
@@ -22,7 +22,7 @@
 
         <button type="submit">Cadastrar</button>
     </form>
-    <a href="{{ url_for('listar_livros') }}">Ver livros cadastrados</a>
+    <a href="{{ url_for('livro.livros') }}">Ver livros cadastrados</a>
   </div>
   
 </div>

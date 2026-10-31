@@ -2,7 +2,9 @@ from flask import render_template, redirect, url_for, flash, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
 from database import SessionLocal
 from blueprints.auth import auth
+from sqlalchemy import select
 from consultas import criar_usuario, buscar_u_p_email, buscar_u_p_id, exigir_login
+from models import Emprestimo
 
 @auth.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
@@ -47,8 +49,32 @@ def logout():
 
 @auth.route('/perfil')
 def perfil():
-  exigir_login()
-  with SessionLocal() as secao:
-    usuario_id = session['usuario_id']
-    usuario = buscar_u_p_id(secao, usuario_id)
-  return render_template('perfil.html', usuario = usuario.nome, email = usuario.email)
+    exigir_login()
+
+    with SessionLocal() as secao:
+        usuario_id = session['usuario_id']
+        usuario = buscar_u_p_id(secao, usuario_id)
+
+        emprestimos = secao.scalars(
+            select(Emprestimo).where(Emprestimo.id_usuario == usuario_id)
+        ).all()
+
+        livros = []
+
+        for emprestimo in emprestimos:
+            id = emprestimo .exemplar.livros.id
+            titulo = emprestimo.exemplar.livros.titulo
+            exemplar = emprestimo.exemplar.titulo
+
+            livros.append({
+                'id': id,
+                'titulo': titulo,
+                'exemplar': exemplar
+            })
+
+    return render_template(
+        'perfil.html',
+        usuario=usuario.nome,
+        email=usuario.email,
+        emprestimos=livros
+    )
