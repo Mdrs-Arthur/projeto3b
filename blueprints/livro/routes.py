@@ -35,6 +35,10 @@ def livros():
 
 @livro.route('/detalhe/<int:livro_id>')
 def detalhe(livro_id):
+    seguranca = exigir_login()
+    if seguranca: 
+        return seguranca  
+    
     with SessionLocal() as secao:
         livro = buscar_l_p_id(secao, livro_id)
         autores = [autor.nome for autor in livro.autores]
@@ -43,7 +47,10 @@ def detalhe(livro_id):
   
 @livro.route('/emprestimo/<int:livro_id>')
 def emprestimo(livro_id):
-    exigir_login()
+    seguranca = exigir_login()
+    if seguranca: 
+        return seguranca  
+      
     usuario_id = session['usuario_id']
 
     with SessionLocal() as secao:
@@ -59,8 +66,9 @@ def emprestimo(livro_id):
 
 @livro.route('/devolucao/<int:livro_id>')
 def devolucao(livro_id):
-
-    exigir_login()
+    seguranca = exigir_login()
+    if seguranca: 
+        return seguranca  
 
     usuario_id = session['usuario_id']
 
@@ -76,21 +84,79 @@ def devolucao(livro_id):
 
 @livro.route('/cadastrar_livro', methods=['GET', 'POST'])
 def cadastrar_livro():
-    if request.method == 'POST':
-        titulo = request.form['titulo']
-        autores = request.form['autor']
-        ano = request.form['ano']
-        genero = request.form['genero']
+    seguranca = exigir_login()
+    if seguranca: 
+        return seguranca  
+    with SessionLocal() as secao:
+        usuario = buscar_u_p_id(secao, usuario_id=session['usuario_id'])
+        if usuario.nome == 'Adm':
+            if request.method == 'POST':
+                titulo = request.form['titulo']
+                autores = request.form['autor']
+                ano = request.form['ano']
+                genero = request.form['genero']
 
-        with SessionLocal() as secao:
-            resultado = criar_livro(secao, titulo, ano, genero, autores)
+                resultado = criar_livro(secao, titulo, ano, genero, autores)
 
-        if resultado:
-            flash('Livro cadastrado com sucesso!')
-        else:
-            flash('Autor não encontrado!')
+                if resultado:
+                    flash('Livro cadastrado com sucesso!')
+                else:
+                    flash('Autor não encontrado!')
 
-        return redirect(url_for('livro.livros'))
+                return redirect(url_for('livro.livros'))
+    
+            return render_template('cadastro_livro.html')
+    flash('Rota protegida para admin!')
+    return redirect(url_for('index'))
 
-    return render_template('cadastro_livro.html')
+@livro.route('/excluir_livro/<int:id>')
+def excluir(id):
+    seguranca = exigir_login()
+    if seguranca: 
+        return seguranca 
 
+    if session.get('usuario_nome') != 'Adm':
+        return redirect(url_for('index'))
+
+    with SessionLocal() as secao:
+        livro = buscar_l_p_id(secao, id)
+        
+        if  livro:
+            excluir_exem(secao, livro.id)
+            secao.delete(livro)
+            secao.commit()
+            return redirect(url_for('livro.livros'))
+
+    return redirect(url_for('livro.livros'))  
+
+@livro.route('/editar_livro/<int:id>', methods=['POST'])
+def editar(id):
+    seguranca = exigir_login()
+    if seguranca: 
+        return seguranca
+    
+    if session.get('usuario_nome') != 'Adm':
+            return redirect(url_for('index'))
+
+    with SessionLocal() as secao:
+        if request.method == 'POST':
+            titulo_novo = request.form.get('titulo')
+            autor_novo = request.form.get('autor')
+            ano_novo = request.form.get('ano')
+            genero_novo = request.form.get('genero')
+            
+            
+            livro = buscar_l_p_id(secao, id)
+            
+            if livro:
+                livro.titulo = titulo_novo
+                livro.autor = autor_novo
+                livro.ano = ano_novo
+                livro.genero = genero_novo
+            
+                secao.commit()
+                return redirect(url_for('livro.livros'))
+            flash('Livro não encontrado!')
+            return redirect(url_for('livro.livros'))
+
+    return redirect(url_for('livro.livros')) 

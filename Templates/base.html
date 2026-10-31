@@ -20,6 +20,9 @@
                     <nav>
                         <a href="{{url_for('index')}}">Início</a>
                         <a href="{{ url_for('livro.livros' ) }}">Livros</a>
+                        {% if session['usuario_nome'] == 'Adm' %}
+                            <a href="{{ url_for('livro.cadastrar_livro' ) }}">Cadastro-Livro</a>
+                        {% endif %}
                         {% if 'usuario_id' in session %}
                             <a href="{{ url_for('auth.perfil' ) }}">Perfil</a>
                         {% else %}
@@ -31,8 +34,8 @@
         </div>
         
     </header>
-    
-    <div class="container">
+
+    <div class="flash_cont">
         {% with mensagens = get_flashed_messages(with_categories=true) %}
             {% if mensagens %}
             <div class="flash">
@@ -42,7 +45,9 @@
             </div>
             {% endif %}
         {% endwith %}
-
+    </div>
+    
+    <div class="container">
         {% block cont %}
         {% endblock %}
     </div>

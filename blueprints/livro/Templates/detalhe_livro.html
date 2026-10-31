@@ -8,36 +8,57 @@
 
     <div class="detalhe-livro">
 
-        <div class="informacoes">
-
-            <h1>{{ livro.titulo }}</h1>
-
-            <div class="informacao">
-                <div class="info">
-                    <h3>Autor:</h3>
-                    {% for autor in autores %}
-                        <h4>{{ autor }}</h4>
-                    {% endfor %}
-                    <h3>Gênero:</h3>
-                    <h4>{{ livro.genero }}</h4>
-                    <h3>exemplares:</h3>
-                    <h4>{{exemplares}}</h4>
-                </div>
-                <div class="info">
-                    <h3>Ano:</h3>
-                    <h4>{{ livro.ano }}</h4>
-                </div>
-            </div>
-
-            <a href="{{ url_for('livro.emprestimo', livro_id = livro.id ) }}" class="voltar">
-                Pegar Emprestado
+        {% if session['usuario_nome'] == 'Adm' %}
+            <form method="POST" action="{{ url_for('livro.editar', id=livro.id ) }}">
+                <input type="text" name="titulo" value="{{ livro.titulo }}">
+                {% for autor in autores %}
+                    <input type="text" name="autor" value="{{ autor }}">
+                {% endfor %}
+                <input type="number" name="ano" value="{{ livro.ano }}">
+                <input type="text" name="genero" value="{{ livro.genero }}">
+                <button type="submit">Salvar</button>
+            </form>
+            <a href="{{ url_for('livro.excluir', id=livro.id ) }}">
+                <button id="del">Remover Livro</button>
             </a>
-
             <a href="{{ url_for('livro.livros') }}" class="voltar">
                 ← Voltar para a lista
             </a>
+        {% else %}
+            <div class="informacoes">
 
-        </div>
+                <h1>{{ livro.titulo }}</h1>
+
+                <div class="informacao">
+                    <div class="info">
+                        <h3>Autor:</h3>
+                        {% for autor in autores %}
+                            <h4>{{ autor }}</h4>
+                        {% endfor %}
+                    </div>
+                    <div class="info">
+                        <h3>Ano:</h3>
+                        <h4>{{ livro.ano }}</h4>
+                    </div>
+                    <div class="info">
+                        <h3>Gênero:</h3>
+                        <h4>{{ livro.genero }}</h4>
+                    </div>
+                    <div class="info">
+                        <h3>Exemplares:</h3>
+                        <h4>{{exemplares}}</h4>
+                    </div>
+                </div>
+                <a href="{{ url_for('livro.emprestimo', livro_id = livro.id ) }}" class="voltar">
+                    Pegar Emprestado
+                </a>
+                <a href="{{ url_for('livro.livros') }}" class="voltar">
+                    ← Voltar para a lista
+                </a>
+
+            </div>
+        {% endif %}            
+        
 
     </div>
 
@@ -86,13 +107,13 @@ h2 {
 .informacao {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 15px;
     margin-bottom: 20px;
     font-size: 18px;
 }
 
 .informacao h3, h4 {
-    width: 100px;
+    width: 15%;
     margin: 0;
 }
 .info{

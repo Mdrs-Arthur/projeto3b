@@ -19,7 +19,6 @@
         {% for emprestimo in emprestimos %}
             <div class="livro">
                 <p>{{ emprestimo.exemplar }}</p>
-                {# arthur arrume esse botão pfv #}
                 <a href="{{ url_for('livro.devolucao', livro_id=emprestimo.id ) }}"><button>devolver livro</button></a>
             </div>
         {% else %}
@@ -71,6 +70,16 @@
         border-bottom: 5px solid rgb(97, 155, 209);
         padding: 10px;
         text-align: center;
+    }
+    .livro{
+        display: flex;
+        flex-direction: row;
+        background-color: rgb(173, 207, 238);
+        padding: 10px;
+        border-radius: 20px;
+    }
+    .livro button{
+        display: flex;
     }
 </style>
 {% endblock %}

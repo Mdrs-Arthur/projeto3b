@@ -22,34 +22,36 @@ def cadastro():
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
-  if 'usuario_id' in session:
-    flash('você já está logado!')
-    return redirect(url_for('index'))
+    if 'usuario_id' in session:
+        flash('você já está logado!')
+        return redirect(url_for('index'))
   
-  with SessionLocal() as secao:
-    if request.method == "POST":
-        email = request.form['email']
-        senha = request.form['senha']
-        usuario = buscar_u_p_email(secao, email)
+    with SessionLocal() as secao:
+        if request.method == "POST":
+            email = request.form['email']
+            senha = request.form['senha']
+            usuario = buscar_u_p_email(secao, email)
 
-        if usuario and check_password_hash(usuario.senha_hash, senha):
-            session['usuario_id'] = usuario.id
-            session['usuario_nome'] = usuario.nome
-            return redirect(url_for('index'))
+            if usuario and check_password_hash(usuario.senha_hash, senha):
+                session['usuario_id'] = usuario.id
+                session['usuario_nome'] = usuario.nome
+                return redirect(url_for('index'))
 
-        flash("email ou senha errados.")
-        return redirect(url_for("auth.login"))
+            flash("email ou senha errados.")
+            return redirect(url_for("auth.login"))
 
     return render_template("login.html")
 
 @auth.route('/logout')
 def logout():
-  session.clear()
-  return redirect(url_for('auth.login'))
+    session.clear()
+    return redirect(url_for('auth.login'))
 
 @auth.route('/perfil')
 def perfil():
-    exigir_login()
+    seguranca = exigir_login()
+    if seguranca: 
+        return seguranca  
 
     with SessionLocal() as secao:
         usuario_id = session['usuario_id']

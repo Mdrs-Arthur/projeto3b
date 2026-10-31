@@ -1,5 +1,5 @@
 from flask import session, flash, redirect, url_for
-from sqlalchemy import select
+from sqlalchemy import select, delete
 from models import Usuario
 from models import Livro
 from models import Autor
@@ -91,6 +91,7 @@ def buscar_l_p_autor(session, autor):
 def listar_livros(session):
     livros = session.scalars(select(Livro)).all()
     return livros
+
 def emprestar_livro(secao, livro_id, usuario_id):
 
     exemplar = secao.scalar(select(Exemplar).where(Exemplar.id_livro == livro_id, Exemplar.emprestimo == None))
@@ -116,6 +117,11 @@ def devolver_livro(secao, livro_id, usuario_id):
     secao.commit()
 
     return True
+
+def excluir_exem(session, livro_id):
+    session.execute(delete(Exemplar).where(Exemplar.id_livro == livro_id))
+    return None
+
 # esse é diferente pq o autor é um relacionamento de livro , e n um paramentro viu (essa qual?)
 #o .any ve se tem algum autor relacionado aquele livro 
 
