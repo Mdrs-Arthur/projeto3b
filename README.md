@@ -38,9 +38,12 @@ N:N então precisamos realizá-lo através de uma tabela associativa.
 
 ## Explicação do relacionamento 1:N
 
+O relacionamento 1:N no nosso projeto se encontra em exemplares e livro , de forma que um livro pode ter vários exemplares, mas um exemplar só deve ser referente a um livro , e na parte da implementação a chave estrangeira está presente na tabela exemplares.
 
 
 ## Explicação do relacionamento N:N
+
+O relacionamento N:N no nosso projeto está na relação entre livro e autores , onde um livro pode ter vários autores , e um autor pode ter vários livros , dessa maneira foi necessária a criação de uma tabela intermédia pra poder realizar esse relacionamento,já que se trata de um N:N
 
 
 ## Dependências necessárias para o bom funcionamento da aplicação:
@@ -75,3 +78,5 @@ Descrição do uso, se houver:
 
 A IA foi usada apenas para consulta e principalmente para entendermos nossos erros, que foram em sua maioria erros de digitação que passaram despercebidos. Vale ressaltar que não usamos IA para gerar código, apenas para 
 entendermos onde erramos e como corrigir.
+
+OBS: Os commits que estão com o nome wemylly-droid na verdade são de Mariana Sâmara, estão saindo com esse nome pois a conta de Wemylly foi logada no notebook de Mariana pra um projeto antigo e acabou dando um conflito e criando esse wemylly-droid, como já explicado em sala para o professor.
