@@ -62,7 +62,7 @@ o usuario deve ter o nome "Adm" para ter acesso as rotas de administrador e cons
 
 ## Principais dificuldades encontradas
 
-
+As principais dificuldades encontradas foram na criação e organização do banco de dados, principalmente nos relacionamentos entre as tabelas, e na integração das rotas com os arquivos HTML. Também houve dificuldades na implementação das funções de empréstimo e exclusão do exemplares, no uso do ORM do SQLAlchemy e no gerenciamento das sessões do Flask e do banco de dados.
 
 ## Declaração de autoria
 
